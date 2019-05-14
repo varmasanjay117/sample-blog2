@@ -1,0 +1,50 @@
+{% extends 'blog/base.html' %}
+{%block content%}
+<div class="container-fluid bg-1 text-center">
+  <h3 class="margin">{{ post.title }}</h3>
+  <small>Post created by: {{ post.author }}</small>
+  <hr>
+  <p>{{ post.body }}</p>
+
+
+</div>
+<div id="like-section">
+  {% include 'blog/like_section.html' %}
+</div>
+
+
+<div id="favourite-section">
+  {% if is_favourite %}
+  <a href="{% url 'blog:favourite_post' id=post.id %}">
+    <i class="fas fa-heart fa-lg"></i>
+  </a>
+  {% else %}
+  <a href="{% url 'blog:favourite_post' id=post.id %}">
+    <i class="far fa-heart fa-lg"></i>
+  </a>
+  {% endif %}
+</div>
+
+{% if post.author == request.user %}
+<div class="section-1" style="float:right;">
+
+  <a href="{% url 'blog:post_edit' id=post.id %}">
+    <button type="button" class="btn btn-outline-success">Edit</button>
+  </a>
+  <a href="{% url 'blog:post_delete' id=post.id %}" id="delete">
+    <button type="button" class="btn btn-danger">Delete</button>
+  </a>
+</div>
+{% endif %}
+
+
+
+<br><br>
+<hr>
+
+{% if not post.restrict_comment %}
+  <div class="main-comment-section">
+    {% include 'blog/comments.html' %}
+  </div>
+{% endif %}
+{%endblock%}
